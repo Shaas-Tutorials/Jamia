@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Student\Controllers\" />
+    <Folder Include="Areas\Student\Data\" />
+    <Folder Include="Areas\Student\Views\" />
+  </ItemGroup>
+
 </Project>
