@@ -11,14 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Areas\School\Controllers\" />
-    <Folder Include="Areas\School\Data\" />
-    <Folder Include="Areas\School\Models\" />
-    <Folder Include="Areas\School\Views\" />
-    <Folder Include="Areas\Student\Controllers\" />
     <Folder Include="Areas\Student\Data\" />
-    <Folder Include="Areas\Student\Views\" />
+    <Folder Include="Areas\Student\Models\" />
+    <Folder Include="Areas\Teacher\Data\" />
+    <Folder Include="Areas\Teacher\Models\" />
   </ItemGroup>
 
 </Project>

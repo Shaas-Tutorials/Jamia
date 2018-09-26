@@ -27,6 +27,14 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Input.Role"></label>
+                @foreach (var item in Model.Roles)
+                {
+                    <input asp-for="Input.Role" type="radio" value="@item.Text" class="form-control" />@item.Text
+                }
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
