@@ -18,5 +18,6 @@ namespace Jamia.Data
             builder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
             builder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
         }
+        public DbSet<Jamia.Areas.Admin.Models.Session> Session { get; set; }
     }
 }

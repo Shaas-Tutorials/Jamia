@@ -9,6 +9,10 @@
     public class ControlerNames
     {
         public static string Home = "Home";
+
+        #region Admin
+        public static string Sessions = "Sessions"; 
+        #endregion
     }
     public class ActionNames
     {
