@@ -24,5 +24,6 @@ namespace Jamia.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
+        public ICollection<Course> Course { get; set; }
     }
 }

@@ -12,6 +12,7 @@
 
         #region Admin
         public static string Sessions = "Sessions"; 
+        public static string Courses = "Courses"; 
         #endregion
     }
     public class ActionNames

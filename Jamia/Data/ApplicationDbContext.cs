@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Jamia.Areas.Admin.Models;
 
 namespace Jamia.Data
 {
@@ -19,5 +20,6 @@ namespace Jamia.Data
             builder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
         }
         public DbSet<Jamia.Areas.Admin.Models.Session> Session { get; set; }
+        public DbSet<Jamia.Areas.Admin.Models.Course> Course { get; set; }
     }
 }
