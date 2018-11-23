@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Jamia.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Jamia.Areas.Admin.Models
 {
+    [Table("Session", Schema = AreaNames.Admin)]
     public class Session
     {
         [Key]

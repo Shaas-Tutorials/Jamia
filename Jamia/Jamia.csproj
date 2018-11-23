@@ -13,13 +13,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20181123092509_IdentityCustomized.cs" />
+    <Compile Remove="Data\Migrations\20181123092509_IdentityCustomized.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181123092922_IdentityCustomized.cs" />
+    <Compile Remove="Data\Migrations\20181123092922_IdentityCustomized.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181123093228_IdentityCustomized.cs" />
+    <Compile Remove="Data\Migrations\20181123093228_IdentityCustomized.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181123094028_IdentityCustomized.cs" />
+    <Compile Remove="Data\Migrations\20181123094028_IdentityCustomized.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181123094513_IdentityCustomized.cs" />
+    <Compile Remove="Data\Migrations\20181123094513_IdentityCustomized.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181123095944_DatabaseSchemaChange.cs" />
+    <Compile Remove="Data\Migrations\20181123095944_DatabaseSchemaChange.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Areas\Student\Data\" />
     <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Teacher\Data\" />
