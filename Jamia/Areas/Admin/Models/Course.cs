@@ -21,6 +21,6 @@ namespace Jamia.Areas.Admin.Models
         [Display(Name = "Select Session")]
         public Guid SessionID { get; set; }
         [ForeignKey("SessionID")]
-        public Session Session { get; set; }
+        public virtual Session Session { get; set; }
     }
 }
