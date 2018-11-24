@@ -11,16 +11,12 @@ namespace Jamia.Models
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
             RoleManager<IdentityRole> RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            UserManager<ApplicationUser> UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] Roles = { RoleNames.Admin, RoleNames.Student, RoleNames.Teacher };
+            string[] Roles = { RoleNames.Admin, RoleNames.Student, RoleNames.Teacher, RoleNames.SuperAdmin };
             foreach (string item in Roles)
             {
                 if (!await RoleManager.RoleExistsAsync(item))
                     await RoleManager.CreateAsync(new IdentityRole(item));
             }
-            var user = new ApplicationUser { UserName = "Jamia_Admin@jamia.com", Email = "Jamia_Admin@jamia.com" };
-            await UserManager.CreateAsync(user, "Jamia_Admin@jamia.com");
-            await UserManager.AddToRoleAsync(user, RoleNames.Admin);
         }
     }
 }

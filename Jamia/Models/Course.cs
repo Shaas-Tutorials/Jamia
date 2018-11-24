@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jamia.Areas.Admin.Models
+namespace Jamia.Models
 {
     [Table("Course", Schema = AreaNames.Admin)]
     public class Course

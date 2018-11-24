@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Jamia.Models;
+using Jamia.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Jamia.Data;
-using Jamia.Models;
 
-namespace Jamia.Areas.Admin.Controllers
+namespace Jamia.Areas.SuperAdmin.Controllers
 {
-    [Area("Admin")]
-    public class CoursesController : Controller
+    [Area("SuperAdmin")]
+    public class InstitutesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CoursesController(ApplicationDbContext context)
+        public InstitutesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Admin/Courses
+        // GET: SuperAdmin/Institutes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Course.Include(c => c.Session);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Institute.ToListAsync());
         }
 
-        // GET: Admin/Courses/Details/5
+        // GET: SuperAdmin/Institutes/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,43 +35,41 @@ namespace Jamia.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .Include(c => c.Session)
+            var institute = await _context.Institute
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (course == null)
+            if (institute == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(institute);
         }
 
-        // GET: Admin/Courses/Create
+        // GET: SuperAdmin/Institutes/Create
         public IActionResult Create()
         {
-            ViewData["SessionID"] = new SelectList(_context.Session, "ID", "SessionName");
             return View();
         }
 
-        // POST: Admin/Courses/Create
+        // POST: SuperAdmin/Institutes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,CourseName,Description,SeatsLimit,SessionID")] Course course)
+        public async Task<IActionResult> Create([Bind("ID,Name,Address,Description")] Institute institute)
         {
             if (ModelState.IsValid)
             {
-                course.ID = Guid.NewGuid();
-                _context.Add(course);
+                institute.ID = Guid.NewGuid();
+                institute.ApplicationUser = await _userManager.GetUserAsync(User);
+                _context.Add(institute);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionID"] = new SelectList(_context.Session, "ID", "SessionName", course.SessionID);
-            return View(course);
+            return View(institute);
         }
 
-        // GET: Admin/Courses/Edit/5
+        // GET: SuperAdmin/Institutes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -79,23 +77,22 @@ namespace Jamia.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course.FindAsync(id);
-            if (course == null)
+            var institute = await _context.Institute.FindAsync(id);
+            if (institute == null)
             {
                 return NotFound();
             }
-            ViewData["SessionID"] = new SelectList(_context.Session, "ID", "SessionName", course.SessionID);
-            return View(course);
+            return View(institute);
         }
 
-        // POST: Admin/Courses/Edit/5
+        // POST: SuperAdmin/Institutes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,CourseName,Description,SeatsLimit,SessionID")] Course course)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Name,Address,Description")] Institute institute)
         {
-            if (id != course.ID)
+            if (id != institute.ID)
             {
                 return NotFound();
             }
@@ -104,12 +101,12 @@ namespace Jamia.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    _context.Update(institute);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.ID))
+                    if (!InstituteExists(institute.ID))
                     {
                         return NotFound();
                     }
@@ -120,11 +117,10 @@ namespace Jamia.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionID"] = new SelectList(_context.Session, "ID", "SessionName", course.SessionID);
-            return View(course);
+            return View(institute);
         }
 
-        // GET: Admin/Courses/Delete/5
+        // GET: SuperAdmin/Institutes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -132,31 +128,30 @@ namespace Jamia.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .Include(c => c.Session)
+            var institute = await _context.Institute
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (course == null)
+            if (institute == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(institute);
         }
 
-        // POST: Admin/Courses/Delete/5
+        // POST: SuperAdmin/Institutes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var course = await _context.Course.FindAsync(id);
-            _context.Course.Remove(course);
+            var institute = await _context.Institute.FindAsync(id);
+            _context.Institute.Remove(institute);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(Guid id)
+        private bool InstituteExists(Guid id)
         {
-            return _context.Course.Any(e => e.ID == id);
+            return _context.Institute.Any(e => e.ID == id);
         }
     }
 }

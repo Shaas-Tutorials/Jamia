@@ -20,7 +20,8 @@ namespace Jamia.Data
             builder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
             builder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
         }
-        public DbSet<Jamia.Areas.Admin.Models.Session> Session { get; set; }
-        public DbSet<Jamia.Areas.Admin.Models.Course> Course { get; set; }
+        public DbSet<Jamia.Models.Session> Session { get; set; }
+        public DbSet<Jamia.Models.Course> Course { get; set; }
+        public DbSet<Jamia.Models.Institute> Institute { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Jamia.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Jamia.Areas.Admin.Models.Course", b =>
+            modelBuilder.Entity("Jamia.Models.Course", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
@@ -41,7 +41,29 @@ namespace Jamia.Data.Migrations
                     b.ToTable("Course","Admin");
                 });
 
-            modelBuilder.Entity("Jamia.Areas.Admin.Models.Session", b =>
+            modelBuilder.Entity("Jamia.Models.Institute", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address")
+                        .IsRequired();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Institute","SuperAdmin");
+                });
+
+            modelBuilder.Entity("Jamia.Models.Session", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
@@ -235,12 +257,19 @@ namespace Jamia.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Jamia.Areas.Admin.Models.Course", b =>
+            modelBuilder.Entity("Jamia.Models.Course", b =>
                 {
-                    b.HasOne("Jamia.Areas.Admin.Models.Session", "Session")
+                    b.HasOne("Jamia.Models.Session", "Session")
                         .WithMany("Course")
                         .HasForeignKey("SessionID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Jamia.Models.Institute", b =>
+                {
+                    b.HasOne("Jamia.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

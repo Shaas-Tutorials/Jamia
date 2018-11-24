@@ -25,6 +25,8 @@
     <Compile Remove="Data\Migrations\20181123094513_IdentityCustomized.Designer.cs" />
     <Compile Remove="Data\Migrations\20181123095944_DatabaseSchemaChange.cs" />
     <Compile Remove="Data\Migrations\20181123095944_DatabaseSchemaChange.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181124134731_InstituteModelAdded.cs" />
+    <Compile Remove="Data\Migrations\20181124134731_InstituteModelAdded.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,14 +37,29 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Student\Data\" />
     <Folder Include="Areas\Student\Models\" />
+    <Folder Include="Areas\SuperAdmin\Data\" />
+    <Folder Include="Areas\SuperAdmin\Models\" />
     <Folder Include="Areas\Teacher\Data\" />
     <Folder Include="Areas\Teacher\Models\" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\SuperAdmin\Views\Shared\_Layout.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\SuperAdmin\Views\Shared\_ValidationScriptsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\SuperAdmin\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\SuperAdmin\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Jamia.Areas.Admin.Models;
+using Jamia.Models;
 using Jamia.Data;
 
 namespace Jamia.Areas.Admin.Controllers

@@ -21,7 +21,7 @@ namespace Jamia.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Jamia.Areas.Admin.Models.Session", b =>
+            modelBuilder.Entity("Jamia.Models.Session", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();

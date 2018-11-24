@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jamia.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181123100431_DatabaseSchemaChange")]
-    partial class DatabaseSchemaChange
+    [Migration("20181124135434_InstituteModelAdded")]
+    partial class InstituteModelAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,28 @@ namespace Jamia.Data.Migrations
                     b.HasIndex("SessionID");
 
                     b.ToTable("Course","Admin");
+                });
+
+            modelBuilder.Entity("Jamia.Models.Institute", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address")
+                        .IsRequired();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Institute","SuperAdmin");
                 });
 
             modelBuilder.Entity("Jamia.Models.Session", b =>
@@ -243,6 +265,13 @@ namespace Jamia.Data.Migrations
                         .WithMany("Course")
                         .HasForeignKey("SessionID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Jamia.Models.Institute", b =>
+                {
+                    b.HasOne("Jamia.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
