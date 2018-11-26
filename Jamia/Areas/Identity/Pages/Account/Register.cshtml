@@ -5,13 +5,37 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-
+@*<div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label></label>
+                <label class="switch form-control">
+                    <input type="checkbox" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>*@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+            @*            <div class="collapse" id="collapseExample">*@
+            <div class="form-group">
+                <label asp-for="Input.CreateInstitute"></label>
+                <label class="switch form-control">
+                    <input asp-for="Input.CreateInstitute" type="checkbox" class="btn btn-primary" />
+                    <span class="slider"></span>
+                </label>
+                <span asp-validation-for="Input.CreateInstitute" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Institute"></label>
+                <input asp-for="Input.Institute" class="form-control" />
+                <span asp-validation-for="Input.Institute" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
@@ -31,7 +55,10 @@
                 <label asp-for="Input.Role"></label>
                 @foreach (var item in Model.Roles)
                 {
-                    <input asp-for="Input.Role" type="radio" value="@item.Text" class="form-control" />@item.Text
+                    @if (item.Text != @RoleNames.SuperAdmin)
+                    {
+                        <input asp-for="Input.Role" type="radio" value="@item.Text" class="form-control" />@item.Text
+                    }
                 }
                 <span asp-validation-for="Input.Role" class="text-danger"></span>
             </div>

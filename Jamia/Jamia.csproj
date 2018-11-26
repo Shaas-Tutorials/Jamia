@@ -27,6 +27,12 @@
     <Compile Remove="Data\Migrations\20181123095944_DatabaseSchemaChange.Designer.cs" />
     <Compile Remove="Data\Migrations\20181124134731_InstituteModelAdded.cs" />
     <Compile Remove="Data\Migrations\20181124134731_InstituteModelAdded.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181125112527_CampusModel.cs" />
+    <Compile Remove="Data\Migrations\20181125112527_CampusModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181126081033_CampusModel.cs" />
+    <Compile Remove="Data\Migrations\20181126081033_CampusModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181126164605_CampusModel.cs" />
+    <Compile Remove="Data\Migrations\20181126164605_CampusModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

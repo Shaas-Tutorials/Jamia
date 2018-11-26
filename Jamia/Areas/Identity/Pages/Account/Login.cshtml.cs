@@ -60,12 +60,14 @@ namespace Jamia.Areas.Identity.Pages.Account
             if (returnUrl is null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
-                var role = await _userManager.GetRolesAsync(user);
-                returnUrl = Url.Action(ActionNames.Index, ControlerNames.Home, new { area = role.FirstOrDefault() });
-                return LocalRedirect(returnUrl);
+                if (user.Status == Status.Approved)
+                {
+                    var role = await _userManager.GetRolesAsync(user);
+                    returnUrl = Url.Action(ActionNames.Index, ControlerNames.Home, new { area = role.FirstOrDefault() });
+                    return LocalRedirect(returnUrl);
+                }
             }
-            else
-                returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);

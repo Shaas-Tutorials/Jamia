@@ -23,5 +23,6 @@ namespace Jamia.Data
         public DbSet<Jamia.Models.Session> Session { get; set; }
         public DbSet<Jamia.Models.Course> Course { get; set; }
         public DbSet<Jamia.Models.Institute> Institute { get; set; }
+        public DbSet<Jamia.Models.Campus> Campus { get; set; }
     }
 }

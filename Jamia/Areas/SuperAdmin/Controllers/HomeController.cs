@@ -1,5 +1,7 @@
 ﻿using Jamia.Infrastructure;
+using Jamia.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jamia.Areas.SuperAdmin.Controllers
@@ -7,6 +9,14 @@ namespace Jamia.Areas.SuperAdmin.Controllers
     [Area(AreaNames.SuperAdmin)]
     public class HomeController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public HomeController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         // GET: Home
         public ActionResult Index()
         {

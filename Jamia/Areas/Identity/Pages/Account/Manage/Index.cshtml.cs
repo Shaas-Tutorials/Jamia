@@ -46,6 +46,7 @@ namespace Jamia.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
+        public string Status { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -54,7 +55,7 @@ namespace Jamia.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            Status = user.Status.ToString();
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

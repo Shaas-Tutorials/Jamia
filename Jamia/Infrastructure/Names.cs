@@ -25,6 +25,7 @@
 
         #region Super Admin
         public const string Institutes = "Institutes";
+        public const string Campus = "Campus";
         #endregion
     }
     public class ActionNames

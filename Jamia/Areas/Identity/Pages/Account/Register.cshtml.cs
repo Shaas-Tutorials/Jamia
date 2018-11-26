@@ -44,6 +44,10 @@ namespace Jamia.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Display(Name = "Create New Institute")]
+            public bool CreateInstitute { get; set; }
+            [Required]
+            public string Institute { get; set; }
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -72,10 +76,10 @@ namespace Jamia.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Action(ActionNames.Index, ControlerNames.Home, new { area = Input.Role }); ;
+            returnUrl = returnUrl ?? Url.Action(ActionNames.Index, ControlerNames.Home, new { area = Input.Role == RoleNames.SuperAdmin ? Input.Role : "" });
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                     result = await _userManager.AddToRoleAsync(user, Input.Role);

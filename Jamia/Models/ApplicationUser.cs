@@ -20,5 +20,6 @@ namespace Jamia.Models
         public string PhotoURL { get; set; }
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
+        public Status Status { get; set; }
     }
 }
