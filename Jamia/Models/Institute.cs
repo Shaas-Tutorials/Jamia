@@ -13,10 +13,8 @@ namespace Jamia.Models
         public Guid ID { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public string Address { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
+        public virtual ICollection<ApplicationUser> UserCollection { get; set; }
         public virtual ICollection<Campus> CampusCollection { get; set; }
     }
 }

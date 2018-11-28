@@ -1,6 +1,5 @@
 ﻿using Jamia.Data;
 using Jamia.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,19 +12,16 @@ namespace Jamia.Areas.SuperAdmin.Controllers
     public class InstitutesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public InstitutesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public InstitutesController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: SuperAdmin/Institutes
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            return View(await _context.Institute.Where(x => x.ApplicationUser == user).ToListAsync());
+            return View(await _context.Institute.ToListAsync());
         }
 
         // GET: SuperAdmin/Institutes/Details/5
@@ -57,12 +53,11 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Address,Description")] Institute institute)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description")] Institute institute)
         {
             if (ModelState.IsValid)
             {
                 institute.ID = Guid.NewGuid();
-                institute.ApplicationUser.Add(await _userManager.GetUserAsync(User));
                 _context.Add(institute);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +86,7 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Name,Address,Description")] Institute institute)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Name,Description")] Institute institute)
         {
             if (id != institute.ID)
             {
@@ -153,6 +148,13 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         private bool InstituteExists(Guid id)
         {
             return _context.Institute.Any(e => e.ID == id);
+        }
+
+        [HttpGet]
+        public IActionResult GetInstitute(string term)
+        {
+            var result = _context.Institute.Where(x => x.Name.Contains(term)).Select(x => x.Name).ToList();
+            return Json(result);
         }
     }
 }

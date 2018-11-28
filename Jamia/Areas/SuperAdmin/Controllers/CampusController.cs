@@ -58,7 +58,7 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,InstituteID")] Campus campus)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Address,InstituteID")] Campus campus)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Name,Description,InstituteID")] Campus campus)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Name,Description,Address,InstituteID")] Campus campus)
         {
             if (id != campus.ID)
             {

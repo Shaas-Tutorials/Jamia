@@ -1,4 +1,5 @@
-﻿using Jamia.Infrastructure;
+﻿using Jamia.Data;
+using Jamia.Infrastructure;
 using Jamia.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,18 +24,21 @@ namespace Jamia.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _context = context;
             Roles = _roleManager.Roles.ToList().Select(role => new RadioModel<string> { Id = role.Id, Text = role.Name });
         }
 
@@ -46,8 +51,10 @@ namespace Jamia.Areas.Identity.Pages.Account
         {
             [Display(Name = "Create New Institute")]
             public bool CreateInstitute { get; set; }
+
             [Required]
             public string Institute { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -63,6 +70,7 @@ namespace Jamia.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
             [Required]
             public string Role { get; set; }
         }
@@ -76,6 +84,12 @@ namespace Jamia.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (Input.CreateInstitute && _context.Institute.Where(x => x.Name.Contains(Input.Institute)).ToList().Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "Institute Name Should be Unique");
+                return Page();
+            }
+            Input.Role = Input.CreateInstitute ? RoleNames.SuperAdmin : Input.Role;
             returnUrl = returnUrl ?? Url.Action(ActionNames.Index, ControlerNames.Home, new { area = Input.Role == RoleNames.SuperAdmin ? Input.Role : "" });
             if (ModelState.IsValid)
             {
@@ -83,6 +97,8 @@ namespace Jamia.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                     result = await _userManager.AddToRoleAsync(user, Input.Role);
+                await _context.Institute.AddAsync(new Institute { ID = Guid.NewGuid(), Name = Input.Institute, UserCollection = new List<ApplicationUser> { user } });
+                await _context.SaveChangesAsync();
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
