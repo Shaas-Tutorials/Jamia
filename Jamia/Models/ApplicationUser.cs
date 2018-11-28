@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jamia.Models
 {
@@ -21,5 +22,8 @@ namespace Jamia.Models
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
         public Status Status { get; set; }
+        public Guid InstituteID { get; set; }
+        [ForeignKey("InstituteID")]
+        public virtual Institute Institute{ get; set; }
     }
 }

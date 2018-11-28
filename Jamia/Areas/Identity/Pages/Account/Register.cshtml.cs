@@ -84,21 +84,32 @@ namespace Jamia.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            if (Input.CreateInstitute && _context.Institute.Where(x => x.Name.Contains(Input.Institute)).ToList().Count > 0)
+            var institute = _context.Institute.Where(x => x.Name == Input.Institute).FirstOrDefault();
+            if (Input.CreateInstitute && institute != null)
             {
                 ModelState.AddModelError(string.Empty, "Institute Name Should be Unique");
+                return Page();
+            }
+            else if (!Input.CreateInstitute && institute == null)
+            {
+                ModelState.AddModelError(string.Empty, $"Institute {Input.Institute} Not Find, Please inter Valid Institute Name.");
                 return Page();
             }
             Input.Role = Input.CreateInstitute ? RoleNames.SuperAdmin : Input.Role;
             returnUrl = returnUrl ?? Url.Action(ActionNames.Index, ControlerNames.Home, new { area = Input.Role == RoleNames.SuperAdmin ? Input.Role : "" });
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
+                var instituteID = institute is null ? Guid.NewGuid() : institute.ID;
+                if (Input.CreateInstitute)
+                {
+                    instituteID = Guid.NewGuid();
+                    await _context.Institute.AddAsync(new Institute { ID = instituteID, Name = Input.Institute });
+                    await _context.SaveChangesAsync();
+                }
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, InstituteID = instituteID, Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                     result = await _userManager.AddToRoleAsync(user, Input.Role);
-                await _context.Institute.AddAsync(new Institute { ID = Guid.NewGuid(), Name = Input.Institute, UserCollection = new List<ApplicationUser> { user } });
-                await _context.SaveChangesAsync();
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

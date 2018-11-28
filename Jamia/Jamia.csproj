@@ -35,6 +35,8 @@
     <Compile Remove="Data\Migrations\20181126164605_CampusModel.Designer.cs" />
     <Compile Remove="Data\Migrations\20181127155744_InstituteCampus.cs" />
     <Compile Remove="Data\Migrations\20181127155744_InstituteCampus.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181128104549_UserInstitute.cs" />
+    <Compile Remove="Data\Migrations\20181128104549_UserInstitute.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
