@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Jamia.Areas.SuperAdmin.Controllers
@@ -59,20 +60,28 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         }
 
         // GET: Home/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string Id)
         {
-            return View();
+            var user = _context.Users.Find(Id);
+            return View(user);
         }
 
         // POST: Home/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(string Id, [Bind("Status")] ApplicationUser applicationUser)
         {
             try
             {
-                // TODO: Add update logic here
-
+                var user = _context.Users.Find(Id);
+                user.Status = applicationUser.Status;
+                _context.Users.Update(user);
+                var claim = new Claim(PolicyNames.Status, Status.Approved.ToString());
+                if (applicationUser.Status == Status.Approved)
+                    await _userManager.AddClaimAsync(user, claim);
+                else
+                    await _userManager.RemoveClaimAsync(user, claim);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

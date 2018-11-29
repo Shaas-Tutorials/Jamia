@@ -1,5 +1,6 @@
 ﻿using Jamia.Areas.Identity.Services;
 using Jamia.Data;
+using Jamia.Infrastructure;
 using Jamia.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,10 @@ namespace Jamia
             .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyNames.Status, policy => policy.RequireClaim(PolicyNames.Status, Status.Approved.ToString()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

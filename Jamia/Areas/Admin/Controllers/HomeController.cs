@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Jamia.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [Area(AreaNames.Admin)]
+    [Authorize(Roles = RoleNames.Admin, Policy = PolicyNames.Status)]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;

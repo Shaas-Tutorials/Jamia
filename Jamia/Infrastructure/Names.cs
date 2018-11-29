@@ -39,4 +39,8 @@
         public const string Admin = "Admin";
         public const string Student = "Student";
     }
+    public class PolicyNames
+    {
+        public const string Status = "Status";
+    }
 }
