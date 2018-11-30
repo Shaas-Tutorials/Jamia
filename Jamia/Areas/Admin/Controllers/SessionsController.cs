@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Jamia.Data;
+using Jamia.Infrastructure;
+using Jamia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Jamia.Models;
-using Jamia.Data;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Jamia.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area(AreaNames.Admin)]
+    [Authorize(Roles = RoleNames.Admin, Policy = PolicyNames.Status)]
     public class SessionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +25,8 @@ namespace Jamia.Areas.Admin.Controllers
         // GET: Admin/Sessions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Session.ToListAsync());
+            var applicationDbContext = _context.Session.Include(s => s.Campus);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Admin/Sessions/Details/5
@@ -35,6 +38,7 @@ namespace Jamia.Areas.Admin.Controllers
             }
 
             var session = await _context.Session
+                .Include(s => s.Campus)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (session == null)
             {
@@ -47,6 +51,7 @@ namespace Jamia.Areas.Admin.Controllers
         // GET: Admin/Sessions/Create
         public IActionResult Create()
         {
+            ViewData["CampusId"] = new SelectList(_context.Campus, "ID", "Address");
             return View();
         }
 
@@ -55,7 +60,7 @@ namespace Jamia.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SessionName,Description,StartDate,EndDate")] Session session)
+        public async Task<IActionResult> Create([Bind("ID,SessionName,Description,StartDate,EndDate,CampusId")] Session session)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +69,7 @@ namespace Jamia.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CampusId"] = new SelectList(_context.Campus, "ID", "Address", session.CampusId);
             return View(session);
         }
 
@@ -80,6 +86,7 @@ namespace Jamia.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewData["CampusId"] = new SelectList(_context.Campus, "ID", "Address", session.CampusId);
             return View(session);
         }
 
@@ -88,7 +95,7 @@ namespace Jamia.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,SessionName,Description,StartDate,EndDate")] Session session)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,SessionName,Description,StartDate,EndDate,CampusId")] Session session)
         {
             if (id != session.ID)
             {
@@ -115,6 +122,7 @@ namespace Jamia.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CampusId"] = new SelectList(_context.Campus, "ID", "Address", session.CampusId);
             return View(session);
         }
 
@@ -127,6 +135,7 @@ namespace Jamia.Areas.Admin.Controllers
             }
 
             var session = await _context.Session
+                .Include(s => s.Campus)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (session == null)
             {

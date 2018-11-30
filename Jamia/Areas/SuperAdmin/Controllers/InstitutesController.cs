@@ -1,5 +1,6 @@
 ﻿using Jamia.Data;
 using Jamia.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,16 +13,20 @@ namespace Jamia.Areas.SuperAdmin.Controllers
     public class InstitutesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public InstitutesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public InstitutesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: SuperAdmin/Institutes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Institute.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            return View(await _context.Institute.Where(x => x.ID == user.InstituteID).ToListAsync());
         }
 
         // GET: SuperAdmin/Institutes/Details/5
