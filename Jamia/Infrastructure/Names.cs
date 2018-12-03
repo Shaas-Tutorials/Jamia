@@ -34,7 +34,7 @@
     }
     public class SchemaNames
     {
-        public const string Security = "Security";
+        public const string Identity = "Identity";
         public const string SuperAdmin = "SuperAdmin";
         public const string Admin = "Admin";
         public const string Student = "Student";

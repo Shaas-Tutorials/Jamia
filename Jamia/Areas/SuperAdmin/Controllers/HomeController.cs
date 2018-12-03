@@ -27,7 +27,7 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(_context.Users.Where(x => x.InstituteID == user.InstituteID && x.Id != user.Id).ToList());
+            return View(_context.Users.Where(x => /*x.InstituteID == user.InstituteID && */x.Id != user.Id).ToList());
         }
 
         // GET: Home/Details/5

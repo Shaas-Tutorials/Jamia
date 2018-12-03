@@ -106,7 +106,7 @@ namespace Jamia.Areas.Identity.Pages.Account
                     await _context.Institute.AddAsync(new Institute { ID = instituteID, Name = Input.Institute });
                     await _context.SaveChangesAsync();
                 }
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, InstituteID = instituteID, Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, /*InstituteID = instituteID, */Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                     result = await _userManager.AddToRoleAsync(user, Input.Role);
