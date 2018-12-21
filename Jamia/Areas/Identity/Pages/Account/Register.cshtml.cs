@@ -102,16 +102,16 @@ namespace Jamia.Areas.Identity.Pages.Account
                 var instituteID = institute is null ? Guid.NewGuid() : institute.ID;
                 if (Input.CreateInstitute)
                 {
-                    instituteID = Guid.NewGuid();
-                    await _context.Institute.AddAsync(new Institute { ID = instituteID, Name = Input.Institute });
-                    await _context.SaveChangesAsync();
+                    institute = new Institute { ID = instituteID, Name = Input.Institute };
+                    _context.Institute.Add(institute);
+                    _context.SaveChanges();
                 }
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, /*InstituteID = instituteID, */Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Status = Input.Role == RoleNames.SuperAdmin ? Status.Approved : Status.Submitted };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
-                    result = await _userManager.AddToRoleAsync(user, Input.Role);
-                if (result.Succeeded)
                 {
+                    _context.UserInstitute.Add(new UserInstitute { ApplicationUser = user, ApplicationUserId = user.Id, Institute = institute, InstituteId = institute.ID });
+                    result = await _userManager.AddToRoleAsync(user, Input.Role);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -132,8 +132,6 @@ namespace Jamia.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }
