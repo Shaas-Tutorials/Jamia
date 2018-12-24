@@ -43,6 +43,16 @@
     <Compile Remove="Data\Migrations\20181201152128_UserInstituteModel.Designer.cs" />
     <Compile Remove="Data\Migrations\20181201171234_UserInstituteModel.cs" />
     <Compile Remove="Data\Migrations\20181201171234_UserInstituteModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181224082333_DefaultTimeStampsAppUser.cs" />
+    <Compile Remove="Data\Migrations\20181224082333_DefaultTimeStampsAppUser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181224131536_DefaultTimeStampsAppUser.cs" />
+    <Compile Remove="Data\Migrations\20181224131536_DefaultTimeStampsAppUser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181224132107_DefaultTimeStampsAppUser.cs" />
+    <Compile Remove="Data\Migrations\20181224132107_DefaultTimeStampsAppUser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181224132514_DefaultTimeStampsAppUser.cs" />
+    <Compile Remove="Data\Migrations\20181224132514_DefaultTimeStampsAppUser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181224133012_DefaultTimeStampsAppUser.cs" />
+    <Compile Remove="Data\Migrations\20181224133012_DefaultTimeStampsAppUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

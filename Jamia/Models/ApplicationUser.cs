@@ -23,6 +23,10 @@ namespace Jamia.Models
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
         public Status Status { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime CreatedTimeStamp { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime ModifiedTimeStamp { get; set; }
         public virtual ICollection<UserInstitute> UserInstitutes{ get; set; }
     }
 }
