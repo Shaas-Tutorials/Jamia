@@ -1,4 +1,5 @@
 ﻿using Jamia.Data;
+using Jamia.Infrastructure;
 using Jamia.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Jamia.Areas.SuperAdmin.Controllers
 {
-    [Area("SuperAdmin")]
+    [Area(AreaNames.SuperAdmin)]
     public class InstitutesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +27,7 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(await _context.Institute/*.Where(x => x.ID == user.InstituteID)*/.ToListAsync());
+            return View(await _context.Institute.Where(ins => _context.UserInstitute.Any(userIns => userIns.InstituteId == ins.ID && userIns.ApplicationUserId == user.Id)).ToListAsync());
         }
 
         // GET: SuperAdmin/Institutes/Details/5
@@ -64,6 +65,8 @@ namespace Jamia.Areas.SuperAdmin.Controllers
             {
                 institute.ID = Guid.NewGuid();
                 _context.Add(institute);
+                var user = await _userManager.GetUserAsync(User);
+                _context.UserInstitute.Add(new UserInstitute { ApplicationUser = user, ApplicationUserId = user.Id, Institute = institute, InstituteId = institute.ID });
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
