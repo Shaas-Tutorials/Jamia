@@ -4,6 +4,9 @@ using Jamia.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -27,9 +30,15 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(_context.Users.Where(x => /*x.InstituteID == user.InstituteID && */x.Id != user.Id).ToList());
+            ViewData["Institutes"] = new SelectList(_context.Institute.Where(ins => _context.UserInstitute.Any(userIns => userIns.InstituteId == ins.ID && userIns.ApplicationUserId == user.Id)).ToList(), "ID", "Name");
+            return View(null);
         }
-
+        [HttpPost]
+        public IActionResult GetUsers(string selected_value)
+        {
+            //var result = _context.Institute.Where(x => x.Name.Contains(term)).Select(x => x.Name).ToList();
+            return Json(null);
+        }
         // GET: Home/Details/5
         public ActionResult Details(int id)
         {

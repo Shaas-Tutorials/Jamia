@@ -9,6 +9,11 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<div class="row">
+    <div class="col col-md-2">
+        <select class="form-control" id="Input_Institute" asp-items="ViewBag.Institutes"></select>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -22,21 +27,44 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $("#Input_Institute").change("change", function () {
+            const selected_value = $("#Input_Institute").val();
+            $.ajax({
+                type: 'POST',
+                accepts: 'application/json',
+                url: '@Url.Action("GetUsers", "Home",new { area = "SuperAdmin" })',
+                contentType: 'application/json',
+                data: selected_value,
+                success: function (result) {
+
+                }
+            });
+        });
+            //autocomplete({ source: '@Url.Action("GetInstitute", "Institutes",new { area = "SuperAdmin"})' });
+    </script>
+}
