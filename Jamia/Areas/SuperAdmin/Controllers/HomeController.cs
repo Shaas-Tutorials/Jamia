@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -30,14 +30,17 @@ namespace Jamia.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            ViewData["Institutes"] = new SelectList(_context.Institute.Where(ins => _context.UserInstitute.Any(userIns => userIns.InstituteId == ins.ID && userIns.ApplicationUserId == user.Id)).ToList(), "ID", "Name");
-            return View(null);
+            var institutes = _context.Institute.Where(ins => _context.UserInstitute.Any(userIns => userIns.InstituteId == ins.ID && userIns.ApplicationUserId == user.Id)).ToList();
+            ViewData["Institutes"] = new SelectList(institutes, "ID", "Name");
+            var users = _context.Users.Where(u => _context.UserInstitute.Any(userIns => userIns.ApplicationUserId == u.Id && userIns.ApplicationUserId != user.Id && userIns.InstituteId == institutes.FirstOrDefault().ID)).ToList();
+            return View(users);
         }
         [HttpPost]
-        public IActionResult GetUsers(string selected_value)
+        public async Task<IActionResult> GetUsers([FromBody]Guid selected_value)
         {
-            //var result = _context.Institute.Where(x => x.Name.Contains(term)).Select(x => x.Name).ToList();
-            return Json(null);
+            var user = await _userManager.GetUserAsync(User);
+            var users = _context.Users.Where(u => _context.UserInstitute.Any(userIns => userIns.ApplicationUserId == u.Id && userIns.ApplicationUserId != user.Id && userIns.InstituteId == selected_value)).ToList();
+            return Json(users, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         }
         // GET: Home/Details/5
         public ActionResult Details(int id)
